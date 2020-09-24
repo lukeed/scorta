@@ -8,7 +8,7 @@ const toAccess = promisify(access);
 const isWrite = str => toAccess(str, 2).then(() => true).catch(() => false);
 
 export async function pkgcache(name, opts) {
-	let env = process.env.CACHE_DIR || '';
+	let dir, env = process.env.CACHE_DIR || '';
 	if (env && !/^(true|false|1|0)$/.test(env)) return env;
 
 	let fallback;
@@ -21,8 +21,9 @@ export async function pkgcache(name, opts) {
 
 	if (!base) return fallback;
 
-	let dir = join(base, 'node_modules');
-	if (existsSync(dir) && !(await isWrite(dir))) return fallback;
+	let bool = await isWrite(dir=join(base, 'node_modules'));
+	if (!bool && !(await isWrite(base))) return fallback;
+	if (!bool && existsSync(dir)) return fallback;
 
 	return join(dir, '.cache', name);
 }

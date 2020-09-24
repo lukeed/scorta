@@ -9,12 +9,11 @@ function isWrite(str) {
 }
 
 export function pkgcache(name, opts) {
-	opts = opts || {};
-
-	let env = process.env.CACHE_DIR || '';
+	let dir, env = process.env.CACHE_DIR || '';
 	if (env && !/^(true|false|1|0)$/.test(env)) return env;
 
 	let fallback;
+	opts = opts || {};
 	if (opts.tmpdir) fallback = tmpdir();
 
 	let base = escalade(opts.cwd || '.', (dir, files) => {
@@ -23,8 +22,8 @@ export function pkgcache(name, opts) {
 
 	if (!base) return fallback;
 
-	let dir = join(base, 'node_modules');
-	if (existsSync(dir) && !isWrite(dir)) return fallback;
-
+	let writable = isWrite(dir=join(base, 'node_modules'));
+	if (!writable && existsSync(dir)) return fallback;
+	if (!writable && !isWrite(base)) return fallback;
 	return join(dir, '.cache', name);
 }
