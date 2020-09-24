@@ -2,6 +2,7 @@ import { test } from 'uvu';
 import { join } from 'path';
 import * as assert from 'uvu/assert';
 import { pkgcache } from '../src/async';
+import * as utils from './fixtures';
 import { tmpdir } from 'os';
 
 const toCacheDir = (base, name='') => join(base, 'node_modules', '.cache', name);
@@ -61,19 +62,26 @@ test('should return `undefined` if no `package.json` found', async () => {
 
 test('should return `undefined` if `node_modules` is read-only', async () => {
 	let cwd = join(fixtures, 'readonly1');
+	let modules = join(cwd, 'node_modules');
+	utils.readonly(modules);
 
 	assert.is(
 		await pkgcache('hello', { cwd }),
 		undefined
 	);
+
+	utils.revert(modules);
 });
 
 test('should return `undefined` if `node_modules` is missing within read-only', async () => {
 	let cwd = join(fixtures, 'readonly2');
+	utils.readonly(cwd);
+
 	assert.is(
 		await pkgcache('hello', { cwd }),
 		undefined
 	);
+	utils.revert(cwd);
 });
 
 test('should ignore `opts.tmpdir` if found `package.json`', async () => {
