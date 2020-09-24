@@ -60,30 +60,32 @@ test('should return `undefined` if no `package.json` found', () => {
 	);
 });
 
-test('should return `undefined` if `node_modules` is read-only', () => {
-	let cwd = join(fixtures, 'readonly1');
-	let modules = join(cwd, 'node_modules');
-	utils.readonly(modules);
+if (!utils.isWin) {
+	test('should return `undefined` if `node_modules` is read-only', () => {
+		let cwd = join(fixtures, 'readonly1');
+		let modules = join(cwd, 'node_modules');
+		utils.readonly(modules);
 
-	assert.is(
-		pkgcache('hello', { cwd }),
-		undefined
-	);
+		assert.is(
+			pkgcache('hello', { cwd }),
+			undefined
+		);
 
-	utils.revert(modules);
-});
+		utils.revert(modules);
+	});
 
-test('should return `undefined` if `node_modules` is missing within read-only', () => {
-	let cwd = join(fixtures, 'readonly2');
-	utils.readonly(cwd);
+	test('should return `undefined` if `node_modules` is missing within read-only', () => {
+		let cwd = join(fixtures, 'readonly2');
+		utils.readonly(cwd);
 
-	assert.is(
-		pkgcache('hello', { cwd }),
-		undefined
-	);
+		assert.is(
+			pkgcache('hello', { cwd }),
+			undefined
+		);
 
-	utils.revert(cwd);
-});
+		utils.revert(cwd);
+	});
+}
 
 test('should ignore `opts.tmpdir` if found `package.json`', () => {
 	assert.is(
