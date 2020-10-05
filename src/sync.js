@@ -8,7 +8,7 @@ function isWrite(str) {
 	catch (err) { return false }
 }
 
-export function pkgcache(name, opts) {
+export function scorta(name, opts) {
 	let dir, env = process.env.CACHE_DIR || '';
 	if (env && !/^(true|false|1|0)$/.test(env)) return env;
 

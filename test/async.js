@@ -1,7 +1,7 @@
 import { test } from 'uvu';
 import { join } from 'path';
 import * as assert from 'uvu/assert';
-import { pkgcache } from '../src/async';
+import { scorta } from '../src/async';
 import * as utils from './fixtures';
 import { tmpdir } from 'os';
 
@@ -12,17 +12,17 @@ const fixtures = join(__dirname, 'fixtures');
 const CACHE = toCacheDir( join(__dirname, '..') );
 
 test('should export a function', () => {
-	assert.type(pkgcache, 'function');
+	assert.type(scorta, 'function');
 });
 
 test('should assume process.cwd', async () => {
 	assert.is(
-		await pkgcache('bundt'),
+		await scorta('bundt'),
 		join(CACHE, 'bundt')
 	);
 
 	assert.is(
-		await pkgcache('foobar'),
+		await scorta('foobar'),
 		join(CACHE, 'foobar')
 	);
 });
@@ -31,31 +31,31 @@ test('should accept custom cwd', async () => {
 	let cwd = __dirname;
 
 	assert.is(
-		await pkgcache('bundt', { cwd }),
+		await scorta('bundt', { cwd }),
 		join(CACHE, 'bundt')
 	);
 
 	assert.is(
-		await pkgcache('foobar', { cwd }),
+		await scorta('foobar', { cwd }),
 		join(CACHE, 'foobar')
 	);
 
 	assert.is(
-		await pkgcache('hello', { cwd: fixtures }),
+		await scorta('hello', { cwd: fixtures }),
 		toCacheDir(fixtures, 'hello')
 	);
 
 	cwd = join(fixtures, 'nested');
 
 	assert.is(
-		await pkgcache('hello', { cwd }),
+		await scorta('hello', { cwd }),
 		toCacheDir(fixtures, 'hello')
 	);
 });
 
 test('should return `undefined` if no `package.json` found', async () => {
 	assert.is(
-		await pkgcache('hello', { cwd: TMPDIR }),
+		await scorta('hello', { cwd: TMPDIR }),
 		undefined
 	);
 });
@@ -67,7 +67,7 @@ if (!utils.isWin) {
 		utils.readonly(modules);
 
 		assert.is(
-			await pkgcache('hello', { cwd }),
+			await scorta('hello', { cwd }),
 			undefined
 		);
 
@@ -79,7 +79,7 @@ if (!utils.isWin) {
 		utils.readonly(cwd);
 
 		assert.is(
-			await pkgcache('hello', { cwd }),
+			await scorta('hello', { cwd }),
 			undefined
 		);
 		utils.revert(cwd);
@@ -88,18 +88,18 @@ if (!utils.isWin) {
 
 test('should ignore `opts.tmpdir` if found `package.json`', async () => {
 	assert.is(
-		await pkgcache('bundt', { tmpdir: true }),
+		await scorta('bundt', { tmpdir: true }),
 		join(CACHE, 'bundt')
 	);
 
 	assert.is(
-		await pkgcache('hello', { cwd: fixtures, tmpdir: true }),
+		await scorta('hello', { cwd: fixtures, tmpdir: true }),
 		toCacheDir(fixtures, 'hello')
 	);
 });
 
 test('should invoke `os.tmpdir()` instead of `undefined` output', async () => {
-	let output = await pkgcache('hello', {
+	let output = await scorta('hello', {
 		cwd: TMPDIR,
 		tmpdir: true
 	});
@@ -111,22 +111,22 @@ test('should ignore `CACHE_DIR` env if invalid', async () => {
 	const expect = join(CACHE, 'hello');
 
 	process.env.CACHE_DIR = '1';
-	assert.is(await pkgcache('hello'), expect);
+	assert.is(await scorta('hello'), expect);
 
 	process.env.CACHE_DIR = '0';
-	assert.is(await pkgcache('hello'), expect);
+	assert.is(await scorta('hello'), expect);
 
 	process.env.CACHE_DIR = 'true';
-	assert.is(await pkgcache('hello'), expect);
+	assert.is(await scorta('hello'), expect);
 
 	process.env.CACHE_DIR = 'false';
-	assert.is(await pkgcache('hello'), expect);
+	assert.is(await scorta('hello'), expect);
 	delete process.env.CACHE_DIR;
 });
 
 test('should return `CACHE_DIR` env if found', async () => {
 	process.env.CACHE_DIR = 'hello';
-	assert.is(await pkgcache('world'), 'hello');
+	assert.is(await scorta('world'), 'hello');
 	delete process.env.CACHE_DIR;
 });
 

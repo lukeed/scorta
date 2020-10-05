@@ -3,5 +3,5 @@ export interface Options {
 	tmpdir: boolean;
 }
 
-export function pkgcache(name: string, opts: { tmpdir: true } & Partial<Options>): string;
-export function pkgcache(name: string, opts?: Partial<Options>): string | void;
+export function scorta(name: string, opts: { tmpdir: true } & Partial<Options>): string;
+export function scorta(name: string, opts?: Partial<Options>): string | void;

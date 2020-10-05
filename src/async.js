@@ -7,7 +7,7 @@ import { tmpdir } from 'os';
 const toAccess = promisify(access);
 const isWrite = str => toAccess(str, 2).then(() => true).catch(() => false);
 
-export async function pkgcache(name, opts) {
+export async function scorta(name, opts) {
 	let dir, env = process.env.CACHE_DIR || '';
 	if (env && !/^(true|false|1|0)$/.test(env)) return env;
 
