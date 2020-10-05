@@ -1,6 +1,6 @@
 {
   "name": "scorta",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "repository": "lukeed/scorta",
   "description": "A tiny (330B to 357B) and fast utility to find a package's hidden supply / cache directory",
   "module": "dist/index.mjs",
