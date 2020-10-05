@@ -1,0 +1,8 @@
+{
+  "private": true,
+  "devDependencies": {
+    "benchmark": "2.1.4",
+    "find-cache-dir": "3.3.1",
+    "scorta": "file:../"
+  }
+}
