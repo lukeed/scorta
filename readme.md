@@ -127,6 +127,33 @@ When truthy, `scorta` will return a [`os.tmpdir()`](https://nodejs.org/api/os.ht
 > **Important:** When this option is in use, `scorta` always yields a string!
 
 
+## Benchmarks
+
+> Running on Node.js v10.13.0
+
+```
+# Load Time
+  find-cache-dir  11.628ms
+  scorta           1.326ms
+  scorta/sync      0.508ms
+
+# Levels: 0 (target = "foo"):
+  find-cache-dir   x 10,700 ops/sec ±0.55% (82 runs sampled)
+  scorta/sync      x 11,060 ops/sec ±0.83% (88 runs sampled)
+  scorta           x 80,804 ops/sec ±2.22% (74 runs sampled)
+
+# Levels: 6 (target = "bar"):
+  find-cache-dir   x  2,107 ops/sec ±0.42% (89 runs sampled)
+  scorta/sync      x  5,507 ops/sec ±0.46% (91 runs sampled)
+  scorta           x 78,593 ops/sec ±4.03% (79 runs sampled)
+
+# Levels: 11 (target = "baz"):
+  find-cache-dir   x  1,377 ops/sec ±0.36% (93 runs sampled)
+  scorta/sync      x  3,892 ops/sec ±0.25% (95 runs sampled)
+  scorta           x 76,641 ops/sec ±6.92% (68 runs sampled)
+```
+
+
 ## Related
 
 - [escalade](https://github.com/lukeed/escalade) - A tiny (183B to 210B) utility to ascend parent directories
