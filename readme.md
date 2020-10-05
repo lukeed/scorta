@@ -1,6 +1,6 @@
 # scorta [![CI](https://github.com/lukeed/scorta/workflows/CI/badge.svg)](https://github.com/lukeed/scorta/actions) [![codecov](https://badgen.now.sh/codecov/c/github/lukeed/scorta)](https://codecov.io/gh/lukeed/scorta)
 
-> A tiny (330B to 357B) and fast utility to find a module's hidden supply / cache directory.
+> A tiny (330B to 357B) and [fast](#benchmarks) utility to find a module's hidden supply / cache directory.
 
 With `scorta`, you can locate a module's private `.cache` directory by name.
 This is a common practice among many popular libraries, including AVA, `nyc`, Babel, etc.
@@ -84,7 +84,7 @@ await scorta('hello', { cwd: fixtures, tmpdir: true });
 //=> "/var/folders/77/hdmgkj_x2l7454w0y5lwv2l80000gn/T"
 ```
 
-> **Note:** To run the above example with "sync" mode, import from `scorta/sync` and remove the `await` keyword.
+> **Note:** To run the above example with "sync" mode, import from `scorta/sync` & remove the `await`s.
 
 
 ## API
